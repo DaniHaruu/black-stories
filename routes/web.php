@@ -2,10 +2,17 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ContactController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/contact', function() {
+    return view('contact information');
+});
+
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
