@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
+//            $table->foreignIdFor(Card::class)->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->text('front');
             $table->text('back');

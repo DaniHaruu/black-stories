@@ -9,13 +9,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/contact', function() {
-    return view('contact');
+Route::get('/about', function() {
+    return view('about');
 });
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
-Route::get('/cards', [CardController::class, 'index']);
+Route::resource('/cards', CardController::class);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

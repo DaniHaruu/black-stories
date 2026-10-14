@@ -1,14 +1,29 @@
-<?php
-
 @foreach ($cards as $card)
     <tr>
-        <td>{{$card->title}}</td>
-        <td>{{$card->front}}</td>
-        <td>
-            //<a href="detail.php?id={{$product->id}}">
-                //    Details
-                //</a>
-            //</td>
+        <div>
+            <td>Title: {{$card->title}}</td>
+        </div>
+        <div>
+            <td>Front: {{$card->front}}</td>
+        </div>
+        <div>
+            <td>
+                <a href="/detail.blade.php?id={{$card->id}}">
+                    See back
+                </a>
+            </td>
+        </div>
     </tr>
+
+    <form method="post" action="{{route('cards.destroy', $card)}}">
+        @method('DELETE')
+        <button type="submit" class="text-red-700">Delete card</button>
+    </form>
 @endforeach
+<div>
+    <x-responsive-nav-link :href="route('cards.create')">
+        Create a new card
+    </x-responsive-nav-link>
+</div>
+
 
