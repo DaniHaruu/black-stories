@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Card;
 use App\Http\Requests\StoreCardRequest;
 use App\Http\Requests\UpdateCardRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CardController extends Controller
@@ -16,23 +17,28 @@ class CardController extends Controller
     {
         $cards = Card::all();
         return view('cards.index', compact('cards'));
-//        $card = new Card();
-//        $card->title = 'Rode Smurrie';
-//        $card->front = 'Er lag een dode man op de stoep, in rode smurrie.';
-//        $card->back = 'De man ergerde zich aan het lawaai van zijn feestvierende buren op het balkon onder hem. Hij besloot met behulp van een paar goed gemikte tomaten een einde aan hun feestje te maken. Om de feestvierders te kunnen raken, moest hij ver over de balkonreling leunen. Hij verloor zijn evenwicht en viel samen met de groente naar beneden.';
     }
 
-    public function detail()
+    /**
+     * Display the specified resource.
+     */
+    public function show(Card $card)
     {
-        return view('cards.detail');
+        return view('cards.detail', compact('card'));
     }
-    //Is dit okay?
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
+        /** @var User $user */
+        $user = auth()->user();
+
+        if (!$user?->isAdmin()) {
+            abort(403, 'Toegang geweigerd. Je bent geen admin.');
+        }
+
         return view('cards.create');
     }
 
@@ -41,6 +47,13 @@ class CardController extends Controller
      */
     public function store(Request $request)
     {
+        /** @var User $user */
+        $user = auth()->user();
+
+        if (!$user?->isAdmin()) {
+            abort(403, 'Toegang geweigerd.');
+        }
+
         $request->validate([
             'title' => 'required|string',
             'front' => 'required|string',
@@ -58,19 +71,18 @@ class CardController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Card $card)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Card $card)
     {
-        //
+        /** @var User $user */
+        $user = auth()->user();
+
+        if (!$user?->isAdmin()) {
+            abort(403, 'Toegang geweigerd. Je bent geen admin.');
+        }
+
+        return view('cards.edit', compact('card'));
     }
 
     /**
@@ -78,7 +90,16 @@ class CardController extends Controller
      */
     public function update(UpdateCardRequest $request, Card $card)
     {
-        //
+        /** @var User $user */
+        $user = auth()->user();
+
+        if (!$user?->isAdmin()) {
+            abort(403, 'Toegang geweigerd. Your are not an admin.');
+        }
+
+        $card->update($request->validated());
+
+        return redirect()->route('cards.index')->with('success', 'Kaart succesvol bijgewerkt!');
     }
 
     /**
@@ -86,7 +107,16 @@ class CardController extends Controller
      */
     public function destroy(Card $card)
     {
+        /** @var User $user */
+        $user = auth()->user();
+
+        if (!$user?->isAdmin()) {
+            abort(403, 'Toegang geweigerd. Je bent geen admin.');
+        }
+
         $card->delete();
-        return redirect()->route('cards.index');
+        return redirect()->route('cards.index')->with('success', 'Kaart succesvol verwijderd!');
     }
 }
+
+
