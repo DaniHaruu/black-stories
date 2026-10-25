@@ -8,7 +8,7 @@ class ContactController extends Controller
 {
     public function index()
     {
-        $name = 'Daniëlle';
+        $name = 'Daniëlle Ruwaard';
         $email = '1123843@hr.nl';
         $message = 'Mocht u een vraag hebben, neem dan contact met mij op';
 
