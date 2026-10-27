@@ -1,17 +1,12 @@
 <x-app-layout>
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us</title>
-</head>
-<body>
-<h1>About Us</h1>
-<p>This is a website made by Daniëlle Ruwaard about the game Black stories, which was made by Holger Bösch.</p>
+    <div class="min-h-screen bg-black px-6 py-10 text-white">
+        <div class="mx-auto max-w-4xl">
 
-<br>
-<a href="/">Terug naar home</a>
-</body>
-</html>
+            <h1 class="mb-8 text-3xl font-bold">
+                About Us
+            </h1>
+
+            <p>This is a website made by Daniëlle Ruwaard about the game Black stories, which was made by Holger Bösch.</p>
+        </div>
+    </div>
 </x-app-layout>

@@ -1,20 +1,15 @@
 <x-app-layout>
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact</title>
-</head>
-<body>
-<h1>Contact informatie</h1>
+    <div class="min-h-screen bg-black px-6 py-10 text-white">
+        <div class="mx-auto max-w-4xl">
 
-<p>Naam: {{ $name }}</p>
-<p>E-mail: {{ $email }}</p>
-<p>{{ $message }}</p>
+            <h1 class="mb-8 text-3xl font-bold">
+                Contact informatie
+            </h1>
 
-<br>
-<a href="/">Terug naar home</a>
-</body>
-</html>
+            <p>Naam: {{ $name }}</p>
+            <p>E-mail: {{ $email }}</p>
+            <p>{{ $message }}</p>
+
+        </div>
+    </div>
 </x-app-layout>
