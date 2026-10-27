@@ -1,3 +1,4 @@
+<x-app-layout>
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -13,3 +14,4 @@
 <a href="/">Terug naar home</a>
 </body>
 </html>
+</x-app-layout>

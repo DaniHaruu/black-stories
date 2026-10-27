@@ -1,40 +1,61 @@
-@foreach ($cards as $card)
-    <tr>
-        <div>
-            <td>Title: {{$card->title}}</td>
-        </div>
-        <div>
-            <td>Front: {{$card->front}}</td>
-        </div>
-        <div>
-            <td>
-                <a href="{{ route('cards.show', $card->id) }}">
-                    See back
-                </a>
-            </td>
-        </div>
-    </tr>
+<x-app-layout>
+<div class="min-h-screen bg-black px-6 py-10 text-white">
+    <div class="mx-auto max-w-4xl">
 
-    @if(auth()->user()?->isAdmin())
-        <div>
-            <a href="{{ route('cards.edit', $card->id) }}">Bewerken</a>
-        </div>
-        <div>
-            <form method="POST" action="{{ route('cards.destroy', $card->id) }}" style="display:inline;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="text-red-700" onclick="return confirm('Weet je zeker dat je deze kaart wilt verwijderen?')">
-                    Delete card
-                </button>
-            </form>
-        </div>
-        <div>
-            <x-responsive-nav-link :href="route('cards.create')">
-                Create a new card
-            </x-responsive-nav-link>
-        </div>
-    @endif
-@endforeach
+        <h1 class="mb-8 text-3xl font-bold">
+            My Cards
+        </h1>
 
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            @foreach ($cards as $card)
+                <div class="rounded-xl border border-gray-700 bg-gray-900 p-6 shadow-lg">
 
+                    <h2 class="mb-4 border-b border-gray-700 pb-3 text-xl font-bold">
+                        {{ $card->title}}
+                    </h2>
+
+                    <p class="mb-6 text-gray-300">
+                        <span class="font-semibold text-white">Front:</span>
+                           {{ $card->front}}
+                        </p>
+
+                    <a href="{{ route('cards.show', $card->id) }}"
+                       class="inline-block rounded-lg bg-[#D3222C] px-4 py-2 font-semibold text-white transition hover:bg-red-800">
+                        See back
+                    </a>
+
+                    @if(auth()->user()?->isAdmin())
+                        <div class="mt-6 border-t border-gray-700 pt-4">
+                            <div class="flex flex-wrap gap-3">
+
+                                <a href="{{ route('cards.edit', $card->id) }}"
+                                   class="rounded-lg border border-[#D3222C] px-4 py-2 text-sm text-white transition hover:bg-[#D3222C]">
+                                    Bewerken
+                                </a>
+
+                                <form method="POST"
+                                      action="{{ route('cards.destroy', $card->id) }}"
+                                      onsubmit="return confirm('Weet je zeker dat je deze kaart wilt verwijderen?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="rounded-lg bg-gray-700 px-4 py-2 text-sm text-white transition hover:bg-[#D3222C]">
+                                        Delete card
+                                    </button>
+                                </form>
+
+                                <a href="{{ route('cards.create') }}"
+                                   class="rounded-lg bg-gray-700 px-4 py-2 text-sm text-white transition hover:bg-[#D3222C]">
+                                    Create a new card
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+
+                </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+</x-app-layout>
 

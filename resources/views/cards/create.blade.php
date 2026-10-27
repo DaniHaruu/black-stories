@@ -1,3 +1,4 @@
+<x-app-layout>
 <form method="POST" action="{{route('cards.index')}}">
     <div>
         <label for="title">Title</label>
@@ -24,3 +25,4 @@
         <button type="submit">Send</button>
     </div>
 </form>
+</x-app-layout>
