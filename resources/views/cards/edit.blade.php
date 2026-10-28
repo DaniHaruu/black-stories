@@ -6,30 +6,40 @@
                 Edit card
             </h1>
 
-            <form method="POST" action="{{route('cards.index')}}">
+            <form method="POST" action="{{ route('cards.update', $card) }}">
+                @csrf
+                @method('PUT')
+
                 <div>
                     <label for="title">New title</label>
-                    <input type="text" id="title" name="title" value="{{old('title')}}" class="text-black">
+                    <input type="text" id="title" name="title" value="{{ old('title', $card->title) }}" class="text-black">
                     @error('title')
                     <span class="text-red-700">{{ $message }}</span>
                     @enderror
                 </div>
                 <div>
                     <label for="front">New front</label>
-                    <input type="text" id="front" name="front" class="text-black">
+                    <input type="text" id="front" name="front" value="{{ old('front', $card->front) }}" class="text-black">
                     @error('front')
                     <span class="text-red-700">{{ $message }}</span>
                     @enderror
                 </div>
                 <div>
                     <label for="back">New back</label>
-                    <input type="text" id="back" name="back" class="text-black">
+                    <input type="text" id="back" name="back" value="{{ old('back', $card->back) }}" class="text-black">
                     @error('back')
                     <span class="text-red-700">{{ $message }}</span>
                     @enderror
                 </div>
                 <div>
-                    <button type="submit" class="mt-3 inline-block rounded-lg bg-[#D3222C] px-4 py-2 text-white transition hover:bg-red-800">Send</button>
+                    <label for="edition">Edition</label>
+                    <input type="text" id="edition" name="edition" value="{{ old('edition', $card->category->edition) }}" class="text-black">
+                    @error('edition')
+                    <span class="text-red-700">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div>
+                    <button type="submit" class="mt-3 inline-block rounded-lg bg-[#D3222C] px-4 py-2 text-white transition hover:bg-red-800">Save changes</button>
                 </div>
             </form>
         </div>

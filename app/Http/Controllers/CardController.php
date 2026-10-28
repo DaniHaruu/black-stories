@@ -129,12 +129,20 @@ class CardController extends Controller
         $user = auth()->user();
 
         if (!$user?->isAdmin()) {
-            abort(403, 'Toegang geweigerd. Your are not an admin.');
+            abort(403, 'Toegang geweigerd.');
         }
 
-        $card->update($request->validated());
+        // Update de gegevens van de kaart
+        $card->title = $request->input('title');
+        $card->front = $request->input('front');
+        $card->back = $request->input('back');
+        $card->save();
+        
+        $card->category->edition = $request->input('edition');
+        $card->category->save();
 
-        return redirect()->route('cards.index')->with('success', 'Kaart succesvol bijgewerkt!');
+        return redirect()->route('cards.index')
+            ->with('success', 'Kaart succesvol bijgewerkt!');
     }
 
     /**
