@@ -18,6 +18,11 @@
                             {{ $card->front}}
                         </p>
 
+                        <p class="mb-6 text-gray-300">
+                            <span class="font-semibold text-white">Edition:</span>
+                            {{ $card->category->edition ?? 'Geen editie' }}
+                        </p>
+
                         <a href="{{ route('cards.show', $card->id) }}"
                            class="inline-block rounded-lg bg-[#D3222C] px-4 py-2 font-semibold text-white transition hover:bg-red-800">
                             See back

@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Card;
+use App\Models\Category;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,10 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('cards', function (Blueprint $table) {
             $table->id();
-            $table->string('edition');
+            $table->string('title');
+            $table->text('front');
+            $table->text('back');
             $table->timestamps();
+            $table->foreignIdFor(Category::class)->constrained()->nullOnDelete();
         });
     }
 
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('cards');
     }
 };
