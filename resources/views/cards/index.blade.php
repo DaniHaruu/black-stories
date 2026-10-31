@@ -68,6 +68,15 @@
                             See back
                         </a>
 
+                        <form method="POST" action="{{ route('cards.toggleFavorite', $card->id) }}" class="mt-3">
+                            @csrf
+
+                            <button type="submit"
+                                    class="inline-block rounded-lg bg-[#D3222C] px-4 py-2 font-semibold text-white transition hover:bg-red-800">
+                                {{ auth()->user()->favorites()->where('cards.id', $card->id)->exists() ? 'Remove favorite' : 'Add to favorites' }}
+                            </button>
+                        </form>
+
                         @if($card->user_id == auth()->id())
                             <div class="mt-6 border-t border-gray-700 pt-4">
                                 <div class="flex flex-wrap gap-3">

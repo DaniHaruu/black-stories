@@ -20,6 +20,12 @@ Route::resource('cards', CardController::class)->middleware('auth');
 Route::post('/cards/{card}/toggle-status', [CardController::class, 'toggleStatus'])
     ->middleware('auth')
     ->name('cards.toggleStatus');
+Route::post('/cards/{card}/favorite', [CardController::class, 'toggleFavorite'])
+    ->middleware('auth')
+    ->name('cards.toggleFavorite');
+Route::get('/favorites', [CardController::class, 'favorites'])
+    ->middleware('auth')
+    ->name('cards.favorites');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

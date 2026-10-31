@@ -165,6 +165,33 @@ class CardController extends Controller
             ->with('success', 'De status is aangepast!');
     }
 
+    public function favorites()
+    {
+        $user = auth()->user();
+
+        $cards = $user->favorites()
+            ->with('category')
+            ->when(!$user->isAdmin(), function ($query) {
+                $query->where('status', true);
+            })
+            ->get();
+
+        return view('cards.favorites', compact('cards'));
+    }
+
+    public function toggleFavorite(Card $card)
+    {
+        $user = auth()->user();
+
+        if ($user->favorites()->where('cards.id', $card->id)->exists()) {
+            $user->favorites()->detach($card->id);
+        } else {
+            $user->favorites()->attach($card->id);
+        }
+
+        return redirect()->back();
+    }
+
     /**
      * Remove the specified resource from storage.
      */

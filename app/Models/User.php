@@ -41,4 +41,9 @@ class User extends Authenticatable
         return $this->hasMany(Card::class);
     }
 
+    public function favorites(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Card::class, 'favorites')->withTimestamps();
+    }
+
 }
