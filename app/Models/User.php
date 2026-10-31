@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Card;
 
 #[Fillable(['name', 'email', 'password', 'role'])]
 #[Hidden(['password', 'remember_token'])]
@@ -33,6 +34,11 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->getAttribute('role') === 'admin';
+    }
+
+    public function cards(): User|\Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Card::class);
     }
 
 }

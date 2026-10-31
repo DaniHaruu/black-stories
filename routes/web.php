@@ -15,7 +15,11 @@ Route::get('/about', function() {
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
-Route::resource('/cards', CardController::class);
+//middleware auth toegevoegd
+Route::resource('cards', CardController::class)->middleware('auth');
+Route::post('/cards/{card}/toggle-status', [CardController::class, 'toggleStatus'])
+    ->middleware('auth')
+    ->name('cards.toggleStatus');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

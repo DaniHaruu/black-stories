@@ -6,7 +6,7 @@
                 Create a new card
             </h1>
 
-            <form method="POST" action="{{route('cards.index')}}">
+            <form method="POST" action="{{ route('cards.store') }}">
                 @csrf
 
                 <div>
