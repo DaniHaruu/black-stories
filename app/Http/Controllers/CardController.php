@@ -113,7 +113,7 @@ class CardController extends Controller
         /** @var User $user */
         $user = auth()->user();
 
-        if (!$user->isAdmin() && $card->user_id != $user->id) {
+        if ($card->user_id != $user->id) {
             abort(403, 'Je mag deze kaart niet bewerken.');
         }
 
@@ -128,7 +128,7 @@ class CardController extends Controller
         /** @var User $user */
         $user = auth()->user();
 
-        if (!$user->isAdmin() && $card->user_id != $user->id) {
+        if ($card->user_id != $user->id) {
             abort(403, 'Je mag deze kaart niet bewerken.');
         }
 
@@ -173,12 +173,14 @@ class CardController extends Controller
         /** @var User $user */
         $user = auth()->user();
 
-        if (!$user?->isAdmin()) {
-            abort(403, 'Toegang geweigerd. Je bent geen admin.');
+        if ($card->user_id != $user->id) {
+            abort(403, 'Je mag deze kaart niet verwijderen.');
         }
 
         $card->delete();
-        return redirect()->route('cards.index')->with('success', 'Kaart succesvol verwijderd!');
+
+        return redirect()->route('cards.index')
+            ->with('success', 'Kaart succesvol verwijderd!');
     }
 }
 

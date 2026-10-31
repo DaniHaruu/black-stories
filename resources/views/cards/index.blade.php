@@ -68,7 +68,7 @@
                             See back
                         </a>
 
-                        @if(auth()->user()?->isAdmin() || $card->user_id == auth()->id())
+                        @if($card->user_id == auth()->id())
                             <div class="mt-6 border-t border-gray-700 pt-4">
                                 <div class="flex flex-wrap gap-3">
 
@@ -77,27 +77,30 @@
                                         Bewerken
                                     </a>
 
-                                    @if(auth()->user()?->isAdmin())
-                                        <form method="POST"
-                                              action="{{ route('cards.destroy', $card->id) }}"
-                                              onsubmit="return confirm('Weet je zeker dat je deze kaart wilt verwijderen?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                    class="inline-block rounded-lg bg-[#D3222C] px-4 py-2 text-white transition hover:bg-red-800">
-                                                Delete card
-                                            </button>
-                                        </form>
-                                        <form method="POST" action="{{ route('cards.toggleStatus', $card->id) }}">
-                                            @csrf
-                                            <button type="submit"
-                                                    class="inline-block rounded-lg bg-[#D3222C] px-4 py-2 text-white transition hover:bg-red-800">
-                                                {{ $card->status ? 'Deactivate' : 'Activate' }}
-                                            </button>
-                                        </form>
-                                    @endif
+                                    <form method="POST"
+                                          action="{{ route('cards.destroy', $card->id) }}"
+                                          onsubmit="return confirm('Weet je zeker dat je deze kaart wilt verwijderen?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                                class="inline-block rounded-lg bg-[#D3222C] px-4 py-2 text-white transition hover:bg-red-800">
+                                            Delete card
+                                        </button>
+                                    </form>
 
                                 </div>
+                            </div>
+                        @endif
+
+                        @if(auth()->user()?->isAdmin())
+                            <div class="mt-4">
+                                <form method="POST" action="{{ route('cards.toggleStatus', $card->id) }}">
+                                    @csrf
+                                    <button type="submit"
+                                            class="inline-block rounded-lg bg-[#D3222C] px-4 py-2 text-white transition hover:bg-red-800">
+                                        {{ $card->status ? 'Deactivate' : 'Activate' }}
+                                    </button>
+                                </form>
                             </div>
                         @endif
                     </div>
