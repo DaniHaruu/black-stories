@@ -10,38 +10,52 @@
                 @csrf
                 @method('PUT')
 
-                <div>
+                <div class="mb-4">
                     <label for="title">New title</label>
-                    <input type="text" id="title" name="title" value="{{ old('title', $card->title) }}" class="text-black">
+                    <input type="text" id="title" name="title"
+                           value="{{ old('title', $card->title) }}"
+                           class="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white">
                     @error('title')
                     <span class="text-red-700">{{ $message }}</span>
                     @enderror
                 </div>
-                <div>
+
+                <div class="mb-4">
                     <label for="front">New front</label>
-                    <input type="text" id="front" name="front" value="{{ old('front', $card->front) }}" class="text-black">
+                    <textarea id="front" name="front" rows="6"
+                              class="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white">{{ old('front', $card->front) }}</textarea>
                     @error('front')
                     <span class="text-red-700">{{ $message }}</span>
                     @enderror
                 </div>
-                <div>
+
+                <div class="mb-4">
                     <label for="back">New back</label>
-                    <input type="text" id="back" name="back" value="{{ old('back', $card->back) }}" class="text-black">
+                    <textarea id="back" name="back" rows="6"
+                              class="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white">{{ old('back', $card->back) }}</textarea>
                     @error('back')
                     <span class="text-red-700">{{ $message }}</span>
                     @enderror
                 </div>
-                <div>
+
+                <div class="mb-4">
                     <label for="edition">Edition</label>
-                    <input type="text" id="edition" name="edition" value="{{ old('edition', $card->category->edition) }}" class="text-black">
+                    <input type="text" id="edition" name="edition"
+                           value="{{ old('edition', $card->category->edition) }}"
+                           class="w-full rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 text-white">
                     @error('edition')
                     <span class="text-red-700">{{ $message }}</span>
                     @enderror
                 </div>
+
                 <div>
-                    <button type="submit" class="mt-3 inline-block rounded-lg bg-[#D3222C] px-4 py-2 text-white transition hover:bg-red-800">Save changes</button>
+                    <button type="submit"
+                            class="mt-3 inline-block rounded-lg bg-[#D3222C] px-4 py-2 text-white transition hover:bg-red-800">
+                        Save changes
+                    </button>
                 </div>
             </form>
+
         </div>
     </div>
 </x-app-layout>

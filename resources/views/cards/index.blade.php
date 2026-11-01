@@ -15,6 +15,20 @@
             <!-- Search and filter -->
             <form method="GET" action="{{ route('cards.index') }}" class="mb-8 flex flex-wrap gap-3">
                 <div>
+                    <select name="viewed" class="rounded-lg px-3 py-2 text-black">
+                        <option value="">All cards</option>
+
+                        <option value="viewed" {{ request('viewed') == 'viewed' ? 'selected' : '' }}>
+                            Viewed
+                        </option>
+
+                        <option value="unviewed" {{ request('viewed') == 'unviewed' ? 'selected' : '' }}>
+                            Unviewed
+                        </option>
+                    </select>
+                </div>
+
+                <div>
                     <input type="text" name="search"
                            value="{{ request('search') }}"
                            placeholder="Search cards..."

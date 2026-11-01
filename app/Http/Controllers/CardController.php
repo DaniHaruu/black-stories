@@ -25,6 +25,7 @@ class CardController extends Controller
             $cards->where('status', true);
         }
 
+        // Search cards
         if ($request->filled('search')) {
             $search = $request->input('search');
 
@@ -35,10 +36,18 @@ class CardController extends Controller
             });
         }
 
+        // Filter by edition
         if ($request->filled('edition')) {
             $cards->whereHas('category', function ($query) use ($request) {
                 $query->where('edition', $request->input('edition'));
             });
+        }
+
+        // Filter by viewed or unviewed cards
+        if ($request->input('viewed') === 'viewed') {
+            $cards->whereIn('id', $user->seenCards()->select('cards.id'));
+        } elseif ($request->input('viewed') === 'unviewed') {
+            $cards->whereNotIn('id', $user->seenCards()->select('cards.id'));
         }
 
         $cards = $cards->get();
