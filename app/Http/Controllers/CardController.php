@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateCardRequest;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CardController extends Controller
 {
@@ -68,6 +69,20 @@ class CardController extends Controller
      */
     public function create()
     {
+        $user = auth()->user();
+
+        // Admins mogen altijd kaarten aanmaken
+        if (!$user->isAdmin()) {
+            $seenCards = DB::table('seen')
+                ->where('user_id', $user->id)
+                ->count();
+
+            if ($seenCards < 3) {
+                return redirect()->route('cards.index')
+                    ->with('error', 'You must view at least 3 different cards before creating your own card.');
+            }
+        }
+
         return view('cards.create');
     }
 
@@ -77,6 +92,20 @@ class CardController extends Controller
 
     public function store(Request $request)
     {
+        $user = auth()->user();
+
+        // Admins mogen altijd kaarten aanmaken
+        if (!$user->isAdmin()) {
+            $seenCards = DB::table('seen')
+                ->where('user_id', $user->id)
+                ->count();
+
+            if ($seenCards < 3) {
+                return redirect()->route('cards.index')
+                    ->with('error', 'You must view at least 3 different cards before creating your own card.');
+            }
+        }
+
         $request->validate([
             'title' => 'required|string',
             'front' => 'required|string',
@@ -190,6 +219,28 @@ class CardController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function recordView(Card $card)
+    {
+        $user = auth()->user();
+
+        // Normale gebruikers mogen geen inactieve kaarten bekijken
+        if (!$user->isAdmin() && !$card->status) {
+            abort(404, 'Deze kaart bestaat niet.');
+        }
+
+        // Admins hoeven geen kaarten te registreren
+        if (!$user->isAdmin()) {
+            DB::table('seen')->insertOrIgnore([
+                'user_id' => $user->id,
+                'card_id' => $card->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        return redirect()->route('cards.show', $card);
     }
 
     /**

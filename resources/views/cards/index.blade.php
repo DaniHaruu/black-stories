@@ -6,6 +6,12 @@
                 My Cards
             </h1>
 
+            @if (session('error'))
+                <div class="mb-6 rounded-lg border border-red-700 bg-gray-900 p-4 text-red-400">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <!-- Search and filter -->
             <form method="GET" action="{{ route('cards.index') }}" class="mb-8 flex flex-wrap gap-3">
                 <div>
@@ -63,10 +69,13 @@
                             </p>
                         @endif
 
-                        <a href="{{ route('cards.show', $card->id) }}"
-                           class="inline-block rounded-lg bg-[#D3222C] px-4 py-2 font-semibold text-white transition hover:bg-red-800">
-                            See back
-                        </a>
+                        <form method="POST" action="{{ route('cards.recordView', $card->id) }}">
+                            @csrf
+                            <button type="submit"
+                                    class="inline-block rounded-lg bg-[#D3222C] px-4 py-2 font-semibold text-white transition hover:bg-red-800">
+                                See back
+                            </button>
+                        </form>
 
                         <form method="POST" action="{{ route('cards.toggleFavorite', $card->id) }}" class="mt-3">
                             @csrf
