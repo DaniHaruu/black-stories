@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateCardRequest;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class CardController extends Controller
 {
@@ -73,9 +72,7 @@ class CardController extends Controller
 
         // Admins can always create cards
         if (!$user->isAdmin()) {
-            $seenCards = DB::table('seen')
-                ->where('user_id', $user->id)
-                ->count();
+            $seenCards = $user->seenCards()->count();
 
             if ($seenCards < 3) {
                 return redirect()->route('cards.index')
@@ -95,9 +92,7 @@ class CardController extends Controller
 
         // Admins can always create cards
         if (!$user->isAdmin()) {
-            $seenCards = DB::table('seen')
-                ->where('user_id', $user->id)
-                ->count();
+            $seenCards = $user->seenCards()->count();
 
             if ($seenCards < 3) {
                 return redirect()->route('cards.index')
@@ -228,15 +223,8 @@ class CardController extends Controller
             abort(404, 'This card does not exist.');
         }
 
-        // Admins do not need to register viewed cards
-        if (!$user->isAdmin()) {
-            DB::table('seen')->insertOrIgnore([
-                'user_id' => $user->id,
-                'card_id' => $card->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
+        // Register the viewed card for every user
+        $user->seenCards()->syncWithoutDetaching([$card->id]);
 
         return redirect()->route('cards.show', $card);
     }

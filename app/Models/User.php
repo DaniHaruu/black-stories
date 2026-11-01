@@ -7,6 +7,8 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Card;
@@ -36,14 +38,18 @@ class User extends Authenticatable
         return $this->getAttribute('role') === 'admin';
     }
 
-    public function cards(): User|\Illuminate\Database\Eloquent\Relations\HasMany
+    public function cards(): HasMany
     {
         return $this->hasMany(Card::class);
     }
 
-    public function favorites(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function favorites(): BelongsToMany
     {
         return $this->belongsToMany(Card::class, 'favorites')->withTimestamps();
     }
 
+    public function seenCards(): BelongsToMany
+    {
+        return $this->belongsToMany(Card::class, 'seen')->withTimestamps();
+    }
 }
