@@ -33,7 +33,7 @@
                             <form method="POST" action="{{ route('cards.toggleFavorite', $card->id) }}">
                                 @csrf
                                 <button type="submit"
-                                        class="inline-block rounded-lg bg-gray-700 px-4 py-2 text-white transition hover:bg-gray-600">
+                                        class="inline-block rounded-lg bg-[#D3222C] px-4 py-2 font-semibold text-white transition hover:bg-red-800">
                                     Remove favorite
                                 </button>
                             </form>
