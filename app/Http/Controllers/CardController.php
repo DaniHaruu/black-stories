@@ -21,7 +21,7 @@ class CardController extends Controller
         /** @var User $user */
         $user = auth()->user();
 
-        // Normale gebruikers zien alleen actieve kaarten
+        // Normal users only see active cards
         if (!$user->isAdmin()) {
             $cards->where('status', true);
         }
@@ -56,22 +56,22 @@ class CardController extends Controller
         /** @var User $user */
         $user = auth()->user();
 
-        // Normale gebruikers mogen geen inactieve kaarten bekijken
+        // Normal users cannot view inactive cards
         if (!$user->isAdmin() && !$card->status) {
-            abort(404, 'Deze kaart bestaat niet.');
+            abort(404, 'This card does not exist.');
         }
 
         return view('cards.detail', compact('card'));
     }
 
-/**
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
         $user = auth()->user();
 
-        // Admins mogen altijd kaarten aanmaken
+        // Admins can always create cards
         if (!$user->isAdmin()) {
             $seenCards = DB::table('seen')
                 ->where('user_id', $user->id)
@@ -89,12 +89,11 @@ class CardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-
     public function store(Request $request)
     {
         $user = auth()->user();
 
-        // Admins mogen altijd kaarten aanmaken
+        // Admins can always create cards
         if (!$user->isAdmin()) {
             $seenCards = DB::table('seen')
                 ->where('user_id', $user->id)
@@ -113,26 +112,25 @@ class CardController extends Controller
             'edition' => 'required|string',
         ]);
 
-        // Zoek de categorie op of maak hem aan
+        // Find the category or create it
         $category = Category::firstOrCreate([
             'edition' => $request->input('edition'),
         ]);
 
-        // Maak de kaart aan
+        // Create the card
         $card = new Card();
         $card->title = $request->input('title');
         $card->front = $request->input('front');
         $card->back = $request->input('back');
         $card->category_id = $category->id;
 
-        // Koppel de kaart aan de ingelogde gebruiker
+        // Link the card to the logged-in user
         $card->user_id = auth()->id();
 
         $card->save();
 
         return redirect()->route('cards.index');
     }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -143,7 +141,7 @@ class CardController extends Controller
         $user = auth()->user();
 
         if ($card->user_id != $user->id) {
-            abort(403, 'Je mag deze kaart niet bewerken.');
+            abort(403, 'You may not edit this card.');
         }
 
         return view('cards.edit', compact('card'));
@@ -158,14 +156,14 @@ class CardController extends Controller
         $user = auth()->user();
 
         if ($card->user_id != $user->id) {
-            abort(403, 'Je mag deze kaart niet bewerken.');
+            abort(403, 'You may not edit this card.');
         }
 
         $card->title = $request->input('title');
         $card->front = $request->input('front');
         $card->back = $request->input('back');
 
-        // Zoek de categorie op of maak hem aan
+        // Find the category or create it
         $category = Category::firstOrCreate([
             'edition' => $request->input('edition'),
         ]);
@@ -175,7 +173,7 @@ class CardController extends Controller
         $card->save();
 
         return redirect()->route('cards.index')
-            ->with('success', 'Kaart succesvol bijgewerkt!');
+            ->with('success', 'Card successfully updated!');
     }
 
     public function toggleStatus(Card $card)
@@ -184,14 +182,14 @@ class CardController extends Controller
         $user = auth()->user();
 
         if (!$user?->isAdmin()) {
-            abort(403, 'Toegang geweigerd. Je bent geen admin.');
+            abort(403, 'Access denied. You are not an admin.');
         }
 
         $card->status = !$card->status;
         $card->save();
 
         return redirect()->route('cards.index')
-            ->with('success', 'De status is aangepast!');
+            ->with('success', 'The status has been updated!');
     }
 
     public function favorites()
@@ -225,12 +223,12 @@ class CardController extends Controller
     {
         $user = auth()->user();
 
-        // Normale gebruikers mogen geen inactieve kaarten bekijken
+        // Normal users cannot view inactive cards
         if (!$user->isAdmin() && !$card->status) {
-            abort(404, 'Deze kaart bestaat niet.');
+            abort(404, 'This card does not exist.');
         }
 
-        // Admins hoeven geen kaarten te registreren
+        // Admins do not need to register viewed cards
         if (!$user->isAdmin()) {
             DB::table('seen')->insertOrIgnore([
                 'user_id' => $user->id,
@@ -252,14 +250,12 @@ class CardController extends Controller
         $user = auth()->user();
 
         if ($card->user_id != $user->id) {
-            abort(403, 'Je mag deze kaart niet verwijderen.');
+            abort(403, 'You may not delete this card.');
         }
 
         $card->delete();
 
         return redirect()->route('cards.index')
-            ->with('success', 'Kaart succesvol verwijderd!');
+            ->with('success', 'Card successfully deleted!');
     }
 }
-
-

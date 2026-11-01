@@ -3,10 +3,10 @@
         <div class="mx-auto max-w-4xl">
 
             <h1 class="mb-8 text-3xl font-bold">
-                Contact informatie
+                Contact information
             </h1>
 
-            <p>Naam: {{ $name }}</p>
+            <p>Name: {{ $name }}</p>
             <p>E-mail: {{ $email }}</p>
             <p>{{ $message }}</p>
 

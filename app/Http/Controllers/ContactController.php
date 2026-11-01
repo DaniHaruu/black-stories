@@ -10,7 +10,7 @@ class ContactController extends Controller
     {
         $name = 'Daniëlle Ruwaard';
         $email = '1123843@hr.nl';
-        $message = 'Mocht u een vraag hebben, neem dan contact met mij op';
+        $message = 'Feel free to contact me if you have a question.';
 
         return view('contact', [
             'name' => $name,
