@@ -12,7 +12,9 @@ class UpdateCardRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $card = $this->route('card');
+
+        return $this->user() && $card && $card->user_id == $this->user()->id;
     }
 
     /**
